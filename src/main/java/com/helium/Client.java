@@ -1,7 +1,9 @@
 package com.helium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
+import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
@@ -41,14 +43,17 @@ public class Client {
             }
         }).build();
 
+        ResourceConverter converter = new ResourceConverter(Sensor.class, Organization.class);
+        converter.disableDeserializationOption(DeserializationFeature.REQUIRE_RESOURCE_ID);
+
+        JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl+"/")
                 .client(okHttpClient)
-                .addConverterFactory(
-                    new JSONAPIConverterFactory(objectMapper,
-                        Sensor.class, Organization.class
-                    ))
+                .addConverterFactory(converterFactory)
                 .build();
+
         service = retrofit.create(HeliumApi.class);
     }
 
