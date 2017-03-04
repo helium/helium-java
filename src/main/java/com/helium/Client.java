@@ -5,6 +5,7 @@ import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
 import okhttp3.Interceptor;
@@ -45,7 +46,12 @@ public class Client {
             }
         }).build();
 
-        ResourceConverter converter = new ResourceConverter(Sensor.class, Organization.class);
+        ResourceConverter converter =
+            new ResourceConverter(
+                Label.class,
+                Sensor.class,
+                Organization.class
+            );
         converter.disableDeserializationOption(DeserializationFeature.REQUIRE_RESOURCE_ID);
 
         JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
@@ -67,6 +73,9 @@ public class Client {
         return service.sensors().execute().body().get();
     }
 
+    public List<Label> labels() throws IOException {
+        return service.labels().execute().body().get();
+    }
 
     public Optional<Sensor> lookupSensor(String sensorId) throws IOException {
         Response<JSONAPIDocument<Sensor>> sensorResponse = service.sensor(sensorId).execute();
@@ -80,6 +89,5 @@ public class Client {
 
     public Sensor createVirtualSensor(String sensorName) throws IOException {
         return service.createSensor(Sensor.newVirtualSensor(sensorName)).execute().body().get();
-
     }
 }

@@ -1,6 +1,7 @@
 package com.helium;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
+import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
 import retrofit2.Call;
@@ -20,4 +21,7 @@ public interface HeliumApi {
 
     @GET("organization")
     Call<JSONAPIDocument<Organization>> organization();
+
+    @GET("label")
+    Call<JSONAPIDocument<List<Label>>> labels();
 }

@@ -1,5 +1,6 @@
 package com.helium;
 
+import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
 import org.junit.Before;
@@ -29,7 +30,6 @@ public class ClientTest {
     public void sensors() throws Exception {
         List<Sensor> sensors = client.sensors();
         System.out.println(sensors.toString());
-
     }
 
     @Test
@@ -45,4 +45,9 @@ public class ClientTest {
         System.out.println(sensor.toString());
     }
 
+    @Test
+    public void labels() throws Exception {
+        List<Label> labels = client.labels();
+        System.out.println(labels.toString());
+    }
 }
