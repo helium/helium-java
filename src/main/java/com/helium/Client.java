@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
+import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.resource.Label;
 import com.helium.resource.Organization;
@@ -52,7 +53,8 @@ public class Client {
                 Sensor.class,
                 Organization.class
             );
-        converter.disableDeserializationOption(DeserializationFeature.REQUIRE_RESOURCE_ID);
+
+        converter.enableSerializationOption(SerializationFeature.INCLUDE_RELATIONSHIP_ATTRIBUTES);
 
         JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
 
@@ -77,6 +79,25 @@ public class Client {
         return service.labels().execute().body().get();
     }
 
+    public Optional<Label> lookupLabel(String labelId) throws IOException {
+        Response<JSONAPIDocument<Label>> labelResponse = service.label(labelId).execute();
+        if (labelResponse.isSuccessful()) {
+            return Optional.of(labelResponse.body().get());
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
+    public Label createLabel(String labelName) throws IOException {
+        return service.createLabel(Label.newLabel(labelName)).execute().body().get();
+    }
+
+    public void deleteLabel(String labelId) throws IOException {
+        service.deleteLabel(labelId).execute();
+
+    }
+
     public Optional<Sensor> lookupSensor(String sensorId) throws IOException {
         Response<JSONAPIDocument<Sensor>> sensorResponse = service.sensor(sensorId).execute();
         if (sensorResponse.isSuccessful()) {
@@ -89,5 +110,10 @@ public class Client {
 
     public Sensor createVirtualSensor(String sensorName) throws IOException {
         return service.createSensor(Sensor.newVirtualSensor(sensorName)).execute().body().get();
+    }
+
+    public void deleteSensor(String sensorId) throws IOException {
+        service.deleteSensor(sensorId).execute();
+
     }
 }

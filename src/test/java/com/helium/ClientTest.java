@@ -6,6 +6,7 @@ import com.helium.resource.Sensor;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,21 +34,32 @@ public class ClientTest {
     }
 
     @Test
-    public void sensor() throws Exception {
-        Optional<Sensor> sensor = client.lookupSensor("16e50465-9b0e-4a84-8989-e7f4b706e417");
-        System.out.println(sensor.toString());
-
-    }
-
-    @Test
     public void createSensor() throws Exception {
         Sensor sensor = client.createVirtualSensor("Test Sensor A");
         System.out.println(sensor.toString());
+        
+        Optional<Sensor> someSensor = client.lookupSensor(sensor.id());
+        System.out.println(someSensor.toString());
+        
+        client.deleteSensor(sensor.id());
     }
 
     @Test
     public void labels() throws Exception {
         List<Label> labels = client.labels();
         System.out.println(labels.toString());
+    }
+    
+    
+    @Test
+    public void createLabel() throws Exception {
+        Label label = client.createLabel("Test Label A");
+        System.out.println(label.toString());
+
+        Optional<Label> someLabel = client.lookupLabel(label.id());
+        System.out.println(label.toString());
+
+        client.deleteLabel(label.id());
+        
     }
 }

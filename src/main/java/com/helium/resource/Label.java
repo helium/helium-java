@@ -1,10 +1,16 @@
 package com.helium.resource;
 
+import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
+
+import java.util.List;
 
 
 @Type("label")
 public class Label extends Resource {
+
+    @Relationship("sensor")
+    private List<Sensor> labelSensors;
 
     public static Label newLabel(String name) {
         Label label = new Label();
@@ -14,7 +20,8 @@ public class Label extends Resource {
 
     @Override
     public String toString() {
-        return "Label{} " + super.toString();
+        return "Label{" +
+                "labelSensors=" + labelSensors +
+                "} " + super.toString();
     }
-
 }
