@@ -6,6 +6,7 @@ import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+import com.helium.resource.DataPoint;
 import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
@@ -49,6 +50,7 @@ public class Client {
 
         ResourceConverter converter =
             new ResourceConverter(
+                DataPoint.class,
                 Label.class,
                 Sensor.class,
                 Organization.class
@@ -114,6 +116,11 @@ public class Client {
 
     public void deleteSensor(String sensorId) throws IOException {
         service.deleteSensor(sensorId).execute();
+    }
 
+    public List<DataPoint> sensorTimeseries(Sensor sensor) throws IOException {
+        JSONAPIDocument<List<DataPoint>> dataPoints =
+            service.timeseries(sensor.id()).execute().body();
+        return dataPoints.get();
     }
 }

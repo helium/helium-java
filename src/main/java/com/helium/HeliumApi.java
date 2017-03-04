@@ -1,6 +1,7 @@
 package com.helium;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
+import com.helium.resource.DataPoint;
 import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
@@ -37,9 +38,10 @@ public interface HeliumApi {
     @POST("sensor")
     Call<JSONAPIDocument<Sensor>> createSensor(@Body Sensor sensor);
 
-
     @GET("organization")
     Call<JSONAPIDocument<Organization>> organization();
 
+    @GET("sensor/{sensorId}/timeseries")
+    Call<JSONAPIDocument<List<DataPoint>>> timeseries(@Path("sensorId")String sensorId);
 }
 

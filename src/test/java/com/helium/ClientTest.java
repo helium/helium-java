@@ -1,5 +1,6 @@
 package com.helium;
 
+import com.helium.resource.DataPoint;
 import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import com.helium.resource.Sensor;
@@ -50,7 +51,6 @@ public class ClientTest {
         System.out.println(labels.toString());
     }
     
-    
     @Test
     public void createLabel() throws Exception {
         Label label = client.createLabel("Test Label A");
@@ -60,6 +60,14 @@ public class ClientTest {
         System.out.println(label.toString());
 
         client.deleteLabel(label.id());
-        
     }
+
+    @Test
+    public void timeseries() throws Exception {
+        Sensor sensor = client.lookupSensor("6887943b-852b-4ab5-a71a-12f0ce31cf75").get();
+        List<DataPoint> timeseries = client.sensorTimeseries(sensor);
+        System.out.println(timeseries.toString());
+    }
+
+
 }
