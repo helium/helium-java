@@ -24,9 +24,11 @@ public class Client {
     private HeliumApi service;
 
     public Client() {
-        String baseUrl = System.getenv("HELIUM_API_URL");
-        String apiKey = System.getenv("HELIUM_API_KEY");
-        new Client(baseUrl, apiKey);
+        this(System.getenv("HELIUM_API_URL"), System.getenv("HELIUM_API_KEY"));
+    }
+
+    public Client(String baseUrl) {
+        this(baseUrl, System.getenv("HELIUM_API_KEY"));
     }
 
     public Client(String baseUrl, final String apiToken) {
