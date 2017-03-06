@@ -1,7 +1,6 @@
 package com.helium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jasminb.jsonapi.DeserializationFeature;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
@@ -14,7 +13,6 @@ import com.helium.resource.Organization;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -23,20 +21,20 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class Client {
+public class Helium {
 
     private HeliumApi service;
     private SensorApi sensorApi;
 
-    public Client() {
+    public Helium() {
         this(System.getenv("HELIUM_API_URL"), System.getenv("HELIUM_API_KEY"));
     }
 
-    public Client(String baseUrl) {
+    public Helium(String baseUrl) {
         this(baseUrl, System.getenv("HELIUM_API_KEY"));
     }
 
-    public Client(String baseUrl, final String apiToken) {
+    public Helium(String baseUrl, final String apiToken) {
         ObjectMapper objectMapper = new ObjectMapper();
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
             @Override
