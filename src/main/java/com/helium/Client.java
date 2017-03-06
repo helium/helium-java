@@ -6,10 +6,11 @@ import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+import com.helium.api.SensorApi;
+import com.helium.client.Sensor;
 import com.helium.resource.DataPoint;
 import com.helium.resource.Label;
 import com.helium.resource.Organization;
-import com.helium.resource.Sensor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class Client {
 
     private HeliumApi service;
+    private SensorApi sensorApi;
 
     public Client() {
         this(System.getenv("HELIUM_API_URL"), System.getenv("HELIUM_API_KEY"));
@@ -52,7 +54,7 @@ public class Client {
             new ResourceConverter(
                 DataPoint.class,
                 Label.class,
-                Sensor.class,
+                com.helium.resource.Sensor.class,
                 Organization.class
             );
 
@@ -67,6 +69,7 @@ public class Client {
                 .build();
 
         service = retrofit.create(HeliumApi.class);
+        sensorApi = retrofit.create(SensorApi.class);
     }
 
     public Organization organization() throws IOException {
@@ -74,7 +77,7 @@ public class Client {
     }
 
     public List<Sensor> sensors() throws IOException {
-        return service.sensors().execute().body().get();
+        return Sensor.getSensors(sensorApi);
     }
 
     public List<Label> labels() throws IOException {
@@ -101,26 +104,10 @@ public class Client {
     }
 
     public Optional<Sensor> lookupSensor(String sensorId) throws IOException {
-        Response<JSONAPIDocument<Sensor>> sensorResponse = service.sensor(sensorId).execute();
-        if (sensorResponse.isSuccessful()) {
-            return Optional.of(sensorResponse.body().get());
-        }
-        else {
-            return Optional.empty();
-        }
+        return Sensor.lookupSensor(sensorApi, sensorId);
     }
 
     public Sensor createVirtualSensor(String sensorName) throws IOException {
-        return service.createSensor(Sensor.newVirtualSensor(sensorName)).execute().body().get();
-    }
-
-    public void deleteSensor(String sensorId) throws IOException {
-        service.deleteSensor(sensorId).execute();
-    }
-
-    public List<DataPoint> sensorTimeseries(Sensor sensor) throws IOException {
-        JSONAPIDocument<List<DataPoint>> dataPoints =
-            service.timeseries(sensor.id()).execute().body();
-        return dataPoints.get();
+        return Sensor.createSensor(sensorApi, sensorName);
     }
 }

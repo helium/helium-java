@@ -1,14 +1,12 @@
 package com.helium.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ValueNode;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 
 @Type("data-point")
 public class DataPoint {
-
 
     @Id
     private String id;
