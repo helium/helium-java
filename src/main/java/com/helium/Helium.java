@@ -26,16 +26,13 @@ public class Helium {
     private HeliumApi service;
     private SensorApi sensorApi;
 
-    public Helium() {
-        this(System.getenv("HELIUM_API_URL"), System.getenv("HELIUM_API_KEY"));
-    }
+    private static final String HELIUM_API_URL = "https://api.helium.com/v1";
+    private static String heliumApiKey = System.getenv("HELIUM_API_KEY");
 
-    public Helium(String baseUrl) {
-        this(baseUrl, System.getenv("HELIUM_API_KEY"));
-    }
+    private static Helium instance = new Helium(HELIUM_API_URL, heliumApiKey);
 
-    public Helium(String baseUrl, final String apiToken) {
-        ObjectMapper objectMapper = new ObjectMapper();
+
+    private Helium(String baseUrl, final String apiToken) {
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -70,20 +67,20 @@ public class Helium {
         sensorApi = retrofit.create(SensorApi.class);
     }
 
-    public Organization organization() throws IOException {
-        return service.organization().execute().body().get();
+    public static Organization organization() throws IOException {
+        return instance.service.organization().execute().body().get();
     }
 
-    public List<Sensor> sensors() throws IOException {
-        return Sensor.getSensors(sensorApi);
+    public static List<Sensor> sensors() throws IOException {
+        return Sensor.getSensors(instance.sensorApi);
     }
 
-    public List<Label> labels() throws IOException {
-        return service.labels().execute().body().get();
+    public static List<Label> labels() throws IOException {
+        return instance.service.labels().execute().body().get();
     }
 
-    public Optional<Label> lookupLabel(String labelId) throws IOException {
-        Response<JSONAPIDocument<Label>> labelResponse = service.label(labelId).execute();
+    public static Optional<Label> lookupLabel(String labelId) throws IOException {
+        Response<JSONAPIDocument<Label>> labelResponse = instance.service.label(labelId).execute();
         if (labelResponse.isSuccessful()) {
             return Optional.of(labelResponse.body().get());
         }
@@ -92,20 +89,20 @@ public class Helium {
         }
     }
 
-    public Label createLabel(String labelName) throws IOException {
-        return service.createLabel(Label.newLabel(labelName)).execute().body().get();
+    public static Label createLabel(String labelName) throws IOException {
+        return instance.service.createLabel(Label.newLabel(labelName)).execute().body().get();
     }
 
-    public void deleteLabel(String labelId) throws IOException {
-        service.deleteLabel(labelId).execute();
+    public static void deleteLabel(String labelId) throws IOException {
+        instance.service.deleteLabel(labelId).execute();
 
     }
 
-    public Optional<Sensor> lookupSensor(String sensorId) throws IOException {
-        return Sensor.lookupSensor(sensorApi, sensorId);
+    public static Optional<Sensor> lookupSensor(String sensorId) throws IOException {
+        return Sensor.lookupSensor(instance.sensorApi, sensorId);
     }
 
-    public Sensor createVirtualSensor(String sensorName) throws IOException {
-        return Sensor.createSensor(sensorApi, sensorName);
+    public static Sensor createVirtualSensor(String sensorName) throws IOException {
+        return Sensor.createSensor(instance.sensorApi, sensorName);
     }
 }

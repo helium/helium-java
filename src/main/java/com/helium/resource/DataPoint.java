@@ -1,8 +1,16 @@
 package com.helium.resource;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
+
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 @Type("data-point")
@@ -14,6 +22,21 @@ public class DataPoint {
     private String port;
     private String timestamp;
     private JsonNode value;
+
+    private static DateFormat dateFormatter() {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        dateFormat.setTimeZone(tz);
+        return dateFormat;
+    }
+
+    public static DataPoint numericDataPoint(Double numVal, String port, Date timestamp) {
+        DataPoint dp = new DataPoint();
+        dp.setPort(port);
+        dp.setTimestamp(dateFormatter().format(timestamp));
+        dp.setValue(JsonNodeFactory.instance.numberNode(numVal));
+        return dp;
+    }
 
     public String getId() {
         return id;
