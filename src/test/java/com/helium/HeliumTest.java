@@ -3,11 +3,10 @@ package com.helium;
 import com.helium.client.Label;
 import com.helium.client.Sensor;
 import com.helium.resource.DataPoint;
-import com.helium.resource.Organization;
+import com.helium.client.Organization;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

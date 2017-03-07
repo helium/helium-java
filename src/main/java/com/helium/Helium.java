@@ -1,20 +1,18 @@
 package com.helium;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.api.LabelApi;
+import com.helium.api.OrganizationApi;
 import com.helium.api.SensorApi;
 import com.helium.client.Label;
+import com.helium.client.Organization;
 import com.helium.client.Sensor;
 import com.helium.resource.DataPoint;
-import com.helium.resource.Organization;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
@@ -24,9 +22,9 @@ import java.util.Optional;
 
 public class Helium {
 
-    private HeliumApi service;
     private SensorApi sensorApi;
     private LabelApi labelApi;
+    private OrganizationApi orgApi;
 
     private static final String HELIUM_API_URL = "https://api.helium.com/v1";
     private static String heliumApiKey = System.getenv("HELIUM_API_KEY");
@@ -52,7 +50,7 @@ public class Helium {
                 DataPoint.class,
                 com.helium.resource.Label.class,
                 com.helium.resource.Sensor.class,
-                Organization.class
+                com.helium.resource.Organization.class
             );
 
         converter.enableSerializationOption(SerializationFeature.INCLUDE_RELATIONSHIP_ATTRIBUTES);
@@ -65,13 +63,13 @@ public class Helium {
                 .addConverterFactory(converterFactory)
                 .build();
 
-        service = retrofit.create(HeliumApi.class);
         sensorApi = retrofit.create(SensorApi.class);
         labelApi = retrofit.create(LabelApi.class);
+        orgApi = retrofit.create(OrganizationApi.class);
     }
 
     public static Organization organization() throws IOException {
-        return instance.service.organization().execute().body().get();
+        return Organization.organization(instance.orgApi);
     }
 
     public static List<Sensor> sensors() throws IOException {
