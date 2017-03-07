@@ -1,7 +1,6 @@
 package com.helium.client;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
-import com.helium.HeliumApi;
 import com.helium.api.SensorApi;
 import com.helium.resource.DataPoint;
 import retrofit2.Response;
@@ -13,64 +12,64 @@ import java.util.Optional;
 
 public class Sensor {
 
-    private SensorApi service;
-    private com.helium.resource.Sensor sensor;
+    private SensorApi api;
+    private com.helium.resource.Sensor model;
 
-    public static Sensor createSensor(SensorApi service, String sensorName) throws IOException {
+    private Sensor(SensorApi api, com.helium.resource.Sensor model) {
+        this.api = api;
+        this.model = model;
+
+    }
+
+    public static Sensor createSensor(SensorApi api, String sensorName) throws IOException {
         return new Sensor(
-                service,
-                service.createSensor(com.helium.resource.Sensor.newVirtualSensor(sensorName))
+                api,
+                api.createSensor(com.helium.resource.Sensor.newVirtualSensor(sensorName))
             .execute().body().get());
     }
 
-    public static List<Sensor> getSensors(SensorApi service) throws IOException {
+    public static List<Sensor> getSensors(SensorApi api) throws IOException {
         List<com.helium.resource.Sensor> sensors =
-            service.sensors() .execute().body().get();
+                api.sensors().execute().body().get();
         List<Sensor> clientSensors = new ArrayList<Sensor>();
         for (com.helium.resource.Sensor sensor : sensors) {
-            clientSensors.add(new Sensor(service, sensor));
+            clientSensors.add(new Sensor(api, sensor));
         }
         return clientSensors;
     }
 
-    public static Optional<Sensor> lookupSensor(SensorApi service, String sensorId) throws IOException {
-        Response<JSONAPIDocument<com.helium.resource.Sensor>> sensorResponse = service.sensor(sensorId).execute();
+    public static Optional<Sensor> lookupSensor(SensorApi api, String sensorId) throws IOException {
+        Response<JSONAPIDocument<com.helium.resource.Sensor>> sensorResponse = api.sensor(sensorId).execute();
         if (sensorResponse.isSuccessful()) {
-            return Optional.of(new Sensor(service, sensorResponse.body().get()));
+            return Optional.of(new Sensor(api, sensorResponse.body().get()));
         }
         else {
             return Optional.empty();
         }
     }
 
-    private Sensor(SensorApi service, com.helium.resource.Sensor sensor) {
-        this.service = service;
-        this.sensor = sensor;
-
-    }
-
     public List<DataPoint> timeseries() throws IOException {
         JSONAPIDocument<List<DataPoint>> dataPoints =
-                service.timeseries(sensor.id()).execute().body();
+                api.timeseries(model.id()).execute().body();
         return dataPoints.get();
     }
 
     public DataPoint createDataPoint(DataPoint dataPoint) throws IOException {
         JSONAPIDocument<DataPoint> newDataPoint =
-                service.createDataPoint(sensor.id(), dataPoint).execute().body();
+                api.createDataPoint(model.id(), dataPoint).execute().body();
         return newDataPoint.get();
     }
 
     public void delete() throws IOException {
-        service.deleteSensor(sensor.id()).execute();
+        api.deleteSensor(model.id()).execute();
     }
 
     public String id() {
-        return sensor.id();
+        return model.id();
     }
 
     @Override
     public String toString() {
-        return sensor.toString();
+        return model.toString();
     }
 }

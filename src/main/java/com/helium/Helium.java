@@ -5,10 +5,11 @@ import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+import com.helium.api.LabelApi;
 import com.helium.api.SensorApi;
+import com.helium.client.Label;
 import com.helium.client.Sensor;
 import com.helium.resource.DataPoint;
-import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -25,6 +26,7 @@ public class Helium {
 
     private HeliumApi service;
     private SensorApi sensorApi;
+    private LabelApi labelApi;
 
     private static final String HELIUM_API_URL = "https://api.helium.com/v1";
     private static String heliumApiKey = System.getenv("HELIUM_API_KEY");
@@ -48,7 +50,7 @@ public class Helium {
         ResourceConverter converter =
             new ResourceConverter(
                 DataPoint.class,
-                Label.class,
+                com.helium.resource.Label.class,
                 com.helium.resource.Sensor.class,
                 Organization.class
             );
@@ -65,6 +67,7 @@ public class Helium {
 
         service = retrofit.create(HeliumApi.class);
         sensorApi = retrofit.create(SensorApi.class);
+        labelApi = retrofit.create(LabelApi.class);
     }
 
     public static Organization organization() throws IOException {
@@ -76,26 +79,15 @@ public class Helium {
     }
 
     public static List<Label> labels() throws IOException {
-        return instance.service.labels().execute().body().get();
+        return Label.getLabels(instance.labelApi);
     }
 
     public static Optional<Label> lookupLabel(String labelId) throws IOException {
-        Response<JSONAPIDocument<Label>> labelResponse = instance.service.label(labelId).execute();
-        if (labelResponse.isSuccessful()) {
-            return Optional.of(labelResponse.body().get());
-        }
-        else {
-            return Optional.empty();
-        }
+        return Label.lookupLabel(instance.labelApi, labelId);
     }
 
     public static Label createLabel(String labelName) throws IOException {
-        return instance.service.createLabel(Label.newLabel(labelName)).execute().body().get();
-    }
-
-    public static void deleteLabel(String labelId) throws IOException {
-        instance.service.deleteLabel(labelId).execute();
-
+        return Label.createLabel(instance.labelApi, labelName);
     }
 
     public static Optional<Sensor> lookupSensor(String sensorId) throws IOException {

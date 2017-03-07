@@ -1,8 +1,8 @@
 package com.helium;
 
+import com.helium.client.Label;
 import com.helium.client.Sensor;
 import com.helium.resource.DataPoint;
-import com.helium.resource.Label;
 import com.helium.resource.Organization;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +55,7 @@ public class HeliumTest {
         Optional<Label> someLabel = Helium.lookupLabel(label.id());
         System.out.println(label.toString());
 
-        Helium.deleteLabel(label.id());
+        label.delete();
     }
 
     @Test
@@ -67,11 +67,11 @@ public class HeliumTest {
 
     @Test
     public void createDatapoint() throws Exception {
-        Sensor sensor = Helium.lookupSensor("6887943b-852b-4ab5-a71a-12f0ce31cf75").get();
+        Sensor sensor = Helium.createVirtualSensor("DataPoint test");
         DataPoint newDp = DataPoint.numericDataPoint(42.0, "universe", new Date());
         DataPoint createdDp = sensor.createDataPoint(newDp);
         System.out.println(createdDp.toString());
+        sensor.delete();
     }
-
 
 }
