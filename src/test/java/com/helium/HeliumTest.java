@@ -36,7 +36,7 @@ public class HeliumTest {
         
         Optional<Sensor> someSensor = Helium.lookupSensor(sensor.id());
         System.out.println(someSensor.toString());
-        
+
         sensor.delete();
     }
 
@@ -44,6 +44,11 @@ public class HeliumTest {
     public void labels() throws Exception {
         List<Label> labels = Helium.labels();
         System.out.println(labels.toString());
+        for (Label label : labels) {
+            for (Sensor sensor : label.getRelatedSensors()) {
+                System.out.println(sensor.toString());
+            }
+        }
     }
     
     @Test

@@ -3,6 +3,7 @@ package com.helium.resource;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,6 +17,15 @@ public class Label extends Resource {
         Label label = new Label();
         label.setName(name);
         return label;
+    }
+
+    public List<Sensor> getSensors() {
+        if (labelSensors == null) {
+            return new ArrayList<>();
+        }
+        else {
+            return labelSensors;
+        }
     }
 
     @Override

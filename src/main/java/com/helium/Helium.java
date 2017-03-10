@@ -3,6 +3,7 @@ package com.helium;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
+import com.helium.api.HeliumApi;
 import com.helium.api.LabelApi;
 import com.helium.api.OrganizationApi;
 import com.helium.api.SensorApi;
@@ -22,9 +23,7 @@ import java.util.Optional;
 
 public class Helium {
 
-    private SensorApi sensorApi;
-    private LabelApi labelApi;
-    private OrganizationApi orgApi;
+    private HeliumApi heliumApi;
 
     private static final String HELIUM_API_URL = "https://api.helium.com/v1";
     private static String heliumApiKey = System.getenv("HELIUM_API_KEY");
@@ -63,36 +62,38 @@ public class Helium {
                 .addConverterFactory(converterFactory)
                 .build();
 
-        sensorApi = retrofit.create(SensorApi.class);
-        labelApi = retrofit.create(LabelApi.class);
-        orgApi = retrofit.create(OrganizationApi.class);
+        heliumApi = new HeliumApi(
+                retrofit.create(LabelApi.class),
+                retrofit.create(OrganizationApi.class),
+                retrofit.create(SensorApi.class)
+        );
     }
 
     public static Organization organization() throws IOException {
-        return Organization.organization(instance.orgApi);
+        return Organization.organization(instance.heliumApi);
     }
 
     public static List<Sensor> sensors() throws IOException {
-        return Sensor.getSensors(instance.sensorApi);
+        return Sensor.getSensors(instance.heliumApi);
     }
 
     public static List<Label> labels() throws IOException {
-        return Label.getLabels(instance.labelApi);
+        return Label.getLabels(instance.heliumApi);
     }
 
     public static Optional<Label> lookupLabel(String labelId) throws IOException {
-        return Label.lookupLabel(instance.labelApi, labelId);
+        return Label.lookupLabel(instance.heliumApi, labelId);
     }
 
     public static Label createLabel(String labelName) throws IOException {
-        return Label.createLabel(instance.labelApi, labelName);
+        return Label.createLabel(instance.heliumApi, labelName);
     }
 
     public static Optional<Sensor> lookupSensor(String sensorId) throws IOException {
-        return Sensor.lookupSensor(instance.sensorApi, sensorId);
+        return Sensor.lookupSensor(instance.heliumApi, sensorId);
     }
 
     public static Sensor createVirtualSensor(String sensorName) throws IOException {
-        return Sensor.createSensor(instance.sensorApi, sensorName);
+        return Sensor.createSensor(instance.heliumApi, sensorName);
     }
 }
