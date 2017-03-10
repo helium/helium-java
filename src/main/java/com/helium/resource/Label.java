@@ -19,15 +19,6 @@ public class Label extends Resource {
         return label;
     }
 
-    public List<Sensor> getSensors() {
-        if (labelSensors == null) {
-            return new ArrayList<>();
-        }
-        else {
-            return labelSensors;
-        }
-    }
-
     @Override
     public String toString() {
         return "Label{" +

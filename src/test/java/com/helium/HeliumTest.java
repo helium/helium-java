@@ -2,6 +2,7 @@ package com.helium;
 
 import com.helium.client.Label;
 import com.helium.client.Sensor;
+import com.helium.client.User;
 import com.helium.resource.DataPoint;
 import com.helium.client.Organization;
 import org.junit.Before;
@@ -78,4 +79,9 @@ public class HeliumTest {
         sensor.delete();
     }
 
+    @Test
+    public void user() throws Exception {
+        User user = Helium.user();
+        System.out.println(user.toString());
+    }
 }

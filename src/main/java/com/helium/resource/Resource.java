@@ -3,6 +3,8 @@ package com.helium.resource;
 
 import com.github.jasminb.jsonapi.annotations.Id;
 
+import java.util.Optional;
+
 
 public abstract class Resource {
 
@@ -18,7 +20,7 @@ public abstract class Resource {
         return name;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

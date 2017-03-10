@@ -18,7 +18,6 @@ public class Sensor {
     protected Sensor(HeliumApi api, com.helium.resource.Sensor model) {
         this.api = api;
         this.model = model;
-
     }
 
     public static Sensor createSensor(HeliumApi api, String sensorName) throws IOException {
@@ -58,15 +57,6 @@ public class Sensor {
         JSONAPIDocument<DataPoint> newDataPoint =
                 api.sensor.createDataPoint(model.id(), dataPoint).execute().body();
         return newDataPoint.get();
-    }
-
-    public List<Label> labels() throws IOException {
-        List<com.helium.resource.Label> labelModels = model.getLabels();
-        List<Label> labels = new ArrayList<>();
-        for (com.helium.resource.Label model : labelModels) {
-            labels.add(new Label(api, model));
-        }
-        return labels;
     }
 
     public void delete() throws IOException {

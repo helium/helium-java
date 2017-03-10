@@ -25,13 +25,4 @@ public class Sensor extends Resource {
                 "sensorLabels=" + sensorLabels +
                 "} " + super.toString();
     }
-
-    public List<Label> getLabels() {
-        if (sensorLabels == null) {
-            return new ArrayList<>();
-        }
-        else {
-            return sensorLabels;
-        }
-    }
 }

@@ -56,15 +56,6 @@ public class Label {
         return sensors;
     }
 
-    public List<Sensor> sensors() throws IOException {
-        List<com.helium.resource.Sensor> sensorModels = model.getSensors();
-        List<Sensor> sensors = new ArrayList<>();
-        for (com.helium.resource.Sensor model : sensorModels) {
-            sensors.add(new Sensor(api, model));
-        }
-        return sensors;
-    }
-
     public void delete() throws IOException {
         api.label.deleteLabel(model.id()).execute();
     }

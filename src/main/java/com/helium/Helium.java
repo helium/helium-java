@@ -3,13 +3,11 @@ package com.helium;
 import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
-import com.helium.api.HeliumApi;
-import com.helium.api.LabelApi;
-import com.helium.api.OrganizationApi;
-import com.helium.api.SensorApi;
+import com.helium.api.*;
 import com.helium.client.Label;
 import com.helium.client.Organization;
 import com.helium.client.Sensor;
+import com.helium.client.User;
 import com.helium.resource.DataPoint;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -49,7 +47,8 @@ public class Helium {
                 DataPoint.class,
                 com.helium.resource.Label.class,
                 com.helium.resource.Sensor.class,
-                com.helium.resource.Organization.class
+                com.helium.resource.Organization.class,
+                com.helium.resource.User.class
             );
 
         converter.enableSerializationOption(SerializationFeature.INCLUDE_RELATIONSHIP_ATTRIBUTES);
@@ -65,7 +64,8 @@ public class Helium {
         heliumApi = new HeliumApi(
                 retrofit.create(LabelApi.class),
                 retrofit.create(OrganizationApi.class),
-                retrofit.create(SensorApi.class)
+                retrofit.create(SensorApi.class),
+                retrofit.create(UserApi.class)
         );
     }
 
@@ -95,5 +95,9 @@ public class Helium {
 
     public static Sensor createVirtualSensor(String sensorName) throws IOException {
         return Sensor.createSensor(instance.heliumApi, sensorName);
+    }
+
+    public static User user() throws IOException {
+        return User.getUser(instance.heliumApi);
     }
 }
