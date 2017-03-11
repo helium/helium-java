@@ -1,6 +1,7 @@
-package com.helium.resource;
+package com.helium.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Metadata {
@@ -17,6 +18,11 @@ public class Metadata {
 
     public ObjectNode getAttibutes(){
         return data.attributes;
+    }
+
+    public Metadata clearAttributes(){
+        data.attributes = JsonNodeFactory.instance.objectNode();
+        return this;
     }
 
     public void setAttibutes(ObjectNode attibutes){

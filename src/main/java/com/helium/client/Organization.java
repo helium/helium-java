@@ -7,10 +7,10 @@ import java.io.IOException;
 public class Organization {
 
     private HeliumApi api;
-    private com.helium.resource.Organization model;
+    private com.helium.model.Organization model;
 
 
-    private Organization(HeliumApi api, com.helium.resource.Organization model) {
+    private Organization(HeliumApi api, com.helium.model.Organization model) {
         this.api = api;
         this.model = model;
     }

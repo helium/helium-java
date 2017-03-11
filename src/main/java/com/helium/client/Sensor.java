@@ -2,8 +2,8 @@ package com.helium.client;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.api.HeliumApi;
-import com.helium.resource.DataPoint;
-import com.helium.resource.Metadata;
+import com.helium.model.DataPoint;
+import com.helium.model.Metadata;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -14,9 +14,9 @@ import java.util.Optional;
 public class Sensor {
 
     private HeliumApi api;
-    private com.helium.resource.Sensor model;
+    private com.helium.model.Sensor model;
 
-    protected Sensor(HeliumApi api, com.helium.resource.Sensor model) {
+    protected Sensor(HeliumApi api, com.helium.model.Sensor model) {
         this.api = api;
         this.model = model;
     }
@@ -24,22 +24,22 @@ public class Sensor {
     public static Sensor createSensor(HeliumApi api, String sensorName) throws IOException {
         return new Sensor(
                 api,
-                api.sensor.createSensor(com.helium.resource.Sensor.newVirtualSensor(sensorName))
+                api.sensor.createSensor(com.helium.model.Sensor.newVirtualSensor(sensorName))
             .execute().body().get());
     }
 
     public static List<Sensor> getSensors(HeliumApi api) throws IOException {
-        List<com.helium.resource.Sensor> sensors =
+        List<com.helium.model.Sensor> sensors =
                 api.sensor.sensors().execute().body().get();
         List<Sensor> clientSensors = new ArrayList<Sensor>();
-        for (com.helium.resource.Sensor sensor : sensors) {
+        for (com.helium.model.Sensor sensor : sensors) {
             clientSensors.add(new Sensor(api, sensor));
         }
         return clientSensors;
     }
 
     public static Optional<Sensor> lookupSensor(HeliumApi api, String sensorId) throws IOException {
-        Response<JSONAPIDocument<com.helium.resource.Sensor>> sensorResponse = api.sensor.sensor(sensorId).execute();
+        Response<JSONAPIDocument<com.helium.model.Sensor>> sensorResponse = api.sensor.sensor(sensorId).execute();
         if (sensorResponse.isSuccessful()) {
             return Optional.of(new Sensor(api, sensorResponse.body().get()));
         }
@@ -69,8 +69,12 @@ public class Sensor {
     }
 
     public Sensor updateSensorMetadata(Metadata metadata) throws IOException {
-        Metadata metadata1 = api.sensor.updateSensorMetadata(id(), metadata).execute().body();
-        System.out.println(metadata1);
+        api.sensor.updateSensorMetadata(id(), metadata).execute().body();
+        return this;
+    }
+
+    public Sensor replaceSensorMetadata(Metadata metadata) throws IOException {
+        api.sensor.replaceSensorMetadata(id(), metadata).execute().body();
         return this;
     }
 

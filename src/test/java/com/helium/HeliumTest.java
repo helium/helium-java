@@ -1,13 +1,12 @@
 package com.helium;
 
-import com.helium.client.*;
 import com.helium.client.Element;
 import com.helium.client.Label;
 import com.helium.client.Organization;
 import com.helium.client.Sensor;
 import com.helium.client.User;
-import com.helium.resource.*;
-import com.helium.resource.Metadata;
+import com.helium.model.*;
+import com.helium.model.Metadata;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -107,6 +106,8 @@ public class HeliumTest {
         Metadata metadata = sensor.sensorMetadata();
         System.out.println(metadata.toString());
         sensor.updateSensorMetadata(metadata.addAttribute("foo", "bar"));
+        System.out.println(metadata.toString());
+        sensor.replaceSensorMetadata(metadata.clearAttributes());
         System.out.println(metadata.toString());
     }
 }

@@ -1,9 +1,8 @@
-package com.helium.resource;
+package com.helium.model;
 
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

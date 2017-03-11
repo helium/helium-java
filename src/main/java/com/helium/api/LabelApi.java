@@ -1,8 +1,8 @@
 package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
-import com.helium.resource.Label;
-import com.helium.resource.Sensor;
+import com.helium.model.Label;
+import com.helium.model.Sensor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;

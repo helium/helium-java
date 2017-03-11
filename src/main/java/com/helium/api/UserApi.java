@@ -1,7 +1,7 @@
 package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
-import com.helium.resource.User;
+import com.helium.model.User;
 import retrofit2.Call;
 import retrofit2.http.*;
 

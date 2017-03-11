@@ -6,7 +6,7 @@ import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.api.*;
 import com.helium.client.*;
-import com.helium.resource.DataPoint;
+import com.helium.model.DataPoint;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,8 +16,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-import static com.fasterxml.jackson.databind.SerializationFeature.WRAP_ROOT_VALUE;
 
 
 public class Helium {
@@ -46,11 +44,11 @@ public class Helium {
         ResourceConverter converter =
             new ResourceConverter(
                 DataPoint.class,
-                com.helium.resource.Element.class,
-                com.helium.resource.Label.class,
-                com.helium.resource.Sensor.class,
-                com.helium.resource.Organization.class,
-                com.helium.resource.User.class
+                com.helium.model.Element.class,
+                com.helium.model.Label.class,
+                com.helium.model.Sensor.class,
+                com.helium.model.Organization.class,
+                com.helium.model.User.class
             );
         converter.enableSerializationOption(SerializationFeature.INCLUDE_RELATIONSHIP_ATTRIBUTES);
         JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);

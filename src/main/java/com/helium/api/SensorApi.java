@@ -1,9 +1,9 @@
 package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
-import com.helium.resource.DataPoint;
-import com.helium.resource.Metadata;
-import com.helium.resource.Sensor;
+import com.helium.model.DataPoint;
+import com.helium.model.Metadata;
+import com.helium.model.Sensor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -35,5 +35,8 @@ public interface SensorApi {
 
     @PATCH("sensor/{sensorId}/metadata")
     Call<Metadata> updateSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
+
+    @PUT("sensor/{sensorId}/metadata")
+    Call<Metadata> replaceSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
 
 }

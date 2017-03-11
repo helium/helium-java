@@ -2,7 +2,7 @@ package com.helium.client;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.api.HeliumApi;
-import com.helium.resource.DataPoint;
+import com.helium.model.DataPoint;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -13,25 +13,25 @@ import java.util.Optional;
 public class Element {
 
     private HeliumApi api;
-    private com.helium.resource.Element model;
+    private com.helium.model.Element model;
 
-    protected Element(HeliumApi api, com.helium.resource.Element model) {
+    protected Element(HeliumApi api, com.helium.model.Element model) {
         this.api = api;
         this.model = model;
     }
 
     public static List<Element> getElements(HeliumApi api) throws IOException {
-        List<com.helium.resource.Element> elements =
+        List<com.helium.model.Element> elements =
                 api.element.elements().execute().body().get();
         List<Element> clientElements = new ArrayList<Element>();
-        for (com.helium.resource.Element element : elements) {
+        for (com.helium.model.Element element : elements) {
             clientElements.add(new Element(api, element));
         }
         return clientElements;
     }
 
     public static Optional<Element> lookupElement(HeliumApi api, String elementId) throws IOException {
-        Response<JSONAPIDocument<com.helium.resource.Element>> elementResponse = api.element.element(elementId).execute();
+        Response<JSONAPIDocument<com.helium.model.Element>> elementResponse = api.element.element(elementId).execute();
         if (elementResponse.isSuccessful()) {
             return Optional.of(new Element(api, elementResponse.body().get()));
         }

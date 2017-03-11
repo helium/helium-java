@@ -6,9 +6,9 @@ import java.io.IOException;
 
 public class User {
     private HeliumApi api;
-    private com.helium.resource.User model;
+    private com.helium.model.User model;
 
-    protected User(HeliumApi api, com.helium.resource.User model) {
+    protected User(HeliumApi api, com.helium.model.User model) {
         this.api = api;
         this.model = model;
     }
