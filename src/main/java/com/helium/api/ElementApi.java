@@ -22,4 +22,7 @@ public interface ElementApi {
 
     @POST("element/{elementId}/timeseries")
     Call<JSONAPIDocument<DataPoint>> createElementDataPoint(@Path("elementId")String elementId, @Body DataPoint dataPoint);
+
+    @PATCH("element/{elementId}")
+    Call<JSONAPIDocument<Element>> updateLabel(@Body Element element);
 }

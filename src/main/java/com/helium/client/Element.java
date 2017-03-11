@@ -40,6 +40,11 @@ public class Element {
         }
     }
 
+    public Element setName(String name) throws IOException {
+        model.setName(name);
+        return new Element(api, api.element.updateElement(model).execute().body().get());
+    }
+
     public List<DataPoint> timeseries() throws IOException {
         JSONAPIDocument<List<DataPoint>> dataPoints =
                 api.element.elementTimeseries(model.id()).execute().body();

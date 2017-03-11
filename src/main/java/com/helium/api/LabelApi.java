@@ -20,8 +20,8 @@ public interface LabelApi {
     @GET("label/{labelId}")
     Call<JSONAPIDocument<Label>> label(@Path("labelId")String labelId);
 
-    @PATCH("label/{labelId?")
-    Call<JSONAPIDocument<Label>> updateLabel(@Body Label user);
+    @PATCH("label/{labelId}")
+    Call<JSONAPIDocument<Label>> updateLabel(@Body Label element);
 
     @DELETE("label/{labelId}")
     Call<ResponseBody> deleteLabel(@Path("labelId")String labelId);
