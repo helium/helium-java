@@ -2,6 +2,7 @@ package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.resource.DataPoint;
+import com.helium.resource.Metadata;
 import com.helium.resource.Sensor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,4 +29,7 @@ public interface SensorApi {
 
     @POST("sensor/{sensorId}/timeseries")
     Call<JSONAPIDocument<DataPoint>> createDataPoint(@Path("sensorId")String sensorId, @Body DataPoint dataPoint);
+
+    @GET("sensor/{sensorId}/metadata")
+    Call<Metadata> sensorMetadata(@Path("sensorId")String sensorId);
 }

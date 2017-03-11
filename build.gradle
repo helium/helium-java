@@ -19,6 +19,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.2.0'
     // Snapshot require for bugfix:
     // https://github.com/jasminb/jsonapi-converter/commit/ee1c74b700c9bd897a4bafb9584657bf6affe006
     compile 'com.github.jasminb:jsonapi-converter:0.7-SNAPSHOT'

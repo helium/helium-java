@@ -17,12 +17,12 @@ public interface ElementApi {
     @GET("element/{elementId}")
     Call<JSONAPIDocument<Element>> element(@Path("elementId")String elementId);
 
+    @PATCH("element/{elementId}")
+    Call<JSONAPIDocument<Element>> updateElement(@Body Element element);
+
     @GET("element/{elementId}/timeseries")
     Call<JSONAPIDocument<List<DataPoint>>> elementTimeseries(@Path("elementId")String elementId);
 
     @POST("element/{elementId}/timeseries")
     Call<JSONAPIDocument<DataPoint>> createElementDataPoint(@Path("elementId")String elementId, @Body DataPoint dataPoint);
-
-    @PATCH("element/{elementId}")
-    Call<JSONAPIDocument<Element>> updateLabel(@Body Element element);
 }

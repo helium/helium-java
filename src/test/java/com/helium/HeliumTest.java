@@ -1,10 +1,16 @@
 package com.helium;
 
 import com.helium.client.*;
-import com.helium.resource.DataPoint;
+import com.helium.client.Element;
+import com.helium.client.Label;
+import com.helium.client.Organization;
+import com.helium.client.Sensor;
+import com.helium.client.User;
+import com.helium.resource.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -92,5 +98,12 @@ public class HeliumTest {
             assertTrue(Helium.lookupElement(element.id()).isPresent());
         }
 
+    }
+
+    @Test
+    public void sensorMetadata() throws IOException {
+        Sensor sensor = Helium.lookupSensor("6887943b-852b-4ab5-a71a-12f0ce31cf75").get();
+        Metadata metadata = sensor.sensorMetadata();
+        System.out.println(metadata.toString());
     }
 }

@@ -3,6 +3,7 @@ package com.helium.client;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.api.HeliumApi;
 import com.helium.resource.DataPoint;
+import com.helium.resource.Metadata;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -61,6 +62,10 @@ public class Sensor {
 
     public void delete() throws IOException {
         api.sensor.deleteSensor(model.id()).execute();
+    }
+
+    public Metadata sensorMetadata() throws IOException {
+        return api.sensor.sensorMetadata(id()).execute().body();
     }
 
     public String id() {
