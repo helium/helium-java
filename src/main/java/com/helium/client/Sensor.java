@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Sensor {
+public class Sensor implements HasMetadata {
 
     private HeliumApi api;
     private com.helium.model.Sensor model;
@@ -64,15 +64,18 @@ public class Sensor {
         api.sensor.deleteSensor(model.id()).execute();
     }
 
+    @Override
     public Metadata metadata() throws IOException {
         return api.sensor.sensorMetadata(id()).execute().body();
     }
 
+    @Override
     public Sensor updateMetadata(Metadata metadata) throws IOException {
         api.sensor.updateSensorMetadata(id(), metadata).execute().body();
         return this;
     }
 
+    @Override
     public Sensor replaceMetadata(Metadata metadata) throws IOException {
         api.sensor.replaceSensorMetadata(id(), metadata).execute().body();
         return this;

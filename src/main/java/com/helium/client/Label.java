@@ -2,6 +2,7 @@ package com.helium.client;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.api.HeliumApi;
+import com.helium.model.Metadata;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Label {
+public class Label implements HasMetadata, HasSensors {
 
     private final HeliumApi api;
     private com.helium.model.Label model;
@@ -50,6 +51,7 @@ public class Label {
         return new Label(api, api.label.updateLabel(model).execute().body().get());
     }
 
+    @Override
     public List<Sensor> sensors() throws IOException {
         Response<JSONAPIDocument<List<com.helium.model.Sensor>>> response =
                 api.label.labelRelationshipSensors(model.id()).execute();
@@ -75,4 +77,20 @@ public class Label {
     }
 
 
+    @Override
+    public Metadata metadata() throws IOException {
+        return api.label.labelMetadata(id()).execute().body();
+    }
+
+    @Override
+    public Label updateMetadata(Metadata metadata) throws IOException {
+        api.label.updateLabelMetadata(id(), metadata).execute().body();
+        return this;
+    }
+
+    @Override
+    public Label replaceMetadata(Metadata metadata) throws IOException {
+        api.label.replaceLabelMetadata(id(), metadata).execute().body();
+        return this;
+    }
 }

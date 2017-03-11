@@ -30,7 +30,7 @@ public class DataPoint {
 
     public static DataPoint jsonDataPoint(JsonNode val, String port, Date timestamp){
         DataPoint dp = new DataPoint();
-        dp.setValue(JsonNodeFactory.instance.numberNode(numVal));
+        dp.setValue(val);
         dp.setPort(port);
         dp.setTimestamp(dateFormatter().format(timestamp));
         return dp;

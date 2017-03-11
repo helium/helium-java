@@ -2,6 +2,7 @@ package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.model.Label;
+import com.helium.model.Metadata;
 import com.helium.model.Sensor;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -25,6 +26,15 @@ public interface LabelApi {
 
     @DELETE("label/{labelId}")
     Call<ResponseBody> deleteLabel(@Path("labelId")String labelId);
+    
+    @GET("label/{labelId}/metadata")
+    Call<Metadata> labelMetadata(@Path("labelId")String labelId);
+
+    @PATCH("label/{labelId}/metadata")
+    Call<Metadata> updateLabelMetadata(@Path("labelId")String labelId, @Body Metadata metadata);
+
+    @PUT("label/{labelId}/metadata")
+    Call<Metadata> replaceLabelMetadata(@Path("labelId")String labelId, @Body Metadata metadata);
 
     @GET("label/{labelId}/sensor")
     Call<JSONAPIDocument<List<Sensor>>> labelRelationshipSensors(@Path("labelId")String labelId);
@@ -37,4 +47,5 @@ public interface LabelApi {
 
     @DELETE("label/{labelId}/relationships")
     Call<JSONAPIDocument<List<Sensor>>> removeLabelSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
+
 }
