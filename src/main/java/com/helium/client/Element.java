@@ -3,6 +3,7 @@ package com.helium.client;
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.api.HeliumApi;
 import com.helium.model.DataPoint;
+import com.helium.model.Metadata;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -55,6 +56,20 @@ public class Element {
         JSONAPIDocument<DataPoint> newDataPoint =
                 api.element.createElementDataPoint(model.id(), dataPoint).execute().body();
         return newDataPoint.get();
+    }
+    
+    public Metadata metadata() throws IOException {
+        return api.element.elementMetadata(id()).execute().body();
+    }
+
+    public Element updateMetadata(Metadata metadata) throws IOException {
+        api.element.updateElementMetadata(id(), metadata).execute().body();
+        return this;
+    }
+
+    public Element replaceMetadata(Metadata metadata) throws IOException {
+        api.element.replaceElementMetadata(id(), metadata).execute().body();
+        return this;
     }
 
     public String id() {

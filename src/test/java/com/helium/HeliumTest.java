@@ -103,11 +103,24 @@ public class HeliumTest {
     @Test
     public void sensorMetadata() throws IOException {
         Sensor sensor = Helium.lookupSensor("6887943b-852b-4ab5-a71a-12f0ce31cf75").get();
-        Metadata metadata = sensor.sensorMetadata();
+        Metadata metadata = sensor.metadata();
         System.out.println(metadata.toString());
-        sensor.updateSensorMetadata(metadata.addAttribute("foo", "bar"));
+        sensor.updateMetadata(metadata.addAttribute("foo", "bar"));
         System.out.println(metadata.toString());
-        sensor.replaceSensorMetadata(metadata.clearAttributes());
+        sensor.replaceMetadata(metadata.clearAttributes());
         System.out.println(metadata.toString());
     }
+
+    @Test
+    public void elementMetadata() throws IOException {
+        Element element = Helium.lookupElement("417da104-3414-4fa3-a919-c6c9908e3368").get();
+        Metadata metadata = element.metadata();
+        System.out.println(metadata.toString());
+        element.updateMetadata(metadata.addAttribute("foo", "bar"));
+        System.out.println(metadata.toString());
+        element.replaceMetadata(metadata.clearAttributes());
+        System.out.println(metadata.toString());
+    }
+    
+    
 }

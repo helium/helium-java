@@ -26,12 +26,12 @@ public interface ElementApi {
     @POST("element/{elementId}/timeseries")
     Call<JSONAPIDocument<DataPoint>> createElementDataPoint(@Path("elementId")String elementId, @Body DataPoint dataPoint);
 
-    @GET("sensor/{sensorId}/metadata")
-    Call<Metadata> sensorMetadata(@Path("sensorId")String sensorId);
+    @GET("element/{elementId}/metadata")
+    Call<Metadata> elementMetadata(@Path("elementId")String elementId);
 
-    @PATCH("sensor/{sensorId}/metadata")
-    Call<Metadata> updateSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
+    @PATCH("element/{elementId}/metadata")
+    Call<Metadata> updateElementMetadata(@Path("elementId")String elementId, @Body Metadata metadata);
 
-    @PUT("sensor/{sensorId}/metadata")
-    Call<Metadata> replaceSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
+    @PUT("element/{elementId}/metadata")
+    Call<Metadata> replaceElementMetadata(@Path("elementId")String elementId, @Body Metadata metadata);
 }

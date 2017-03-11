@@ -64,16 +64,16 @@ public class Sensor {
         api.sensor.deleteSensor(model.id()).execute();
     }
 
-    public Metadata sensorMetadata() throws IOException {
+    public Metadata metadata() throws IOException {
         return api.sensor.sensorMetadata(id()).execute().body();
     }
 
-    public Sensor updateSensorMetadata(Metadata metadata) throws IOException {
+    public Sensor updateMetadata(Metadata metadata) throws IOException {
         api.sensor.updateSensorMetadata(id(), metadata).execute().body();
         return this;
     }
 
-    public Sensor replaceSensorMetadata(Metadata metadata) throws IOException {
+    public Sensor replaceMetadata(Metadata metadata) throws IOException {
         api.sensor.replaceSensorMetadata(id(), metadata).execute().body();
         return this;
     }

@@ -28,12 +28,20 @@ public class DataPoint {
         return dateFormat;
     }
 
-    public static DataPoint numericDataPoint(Double numVal, String port, Date timestamp) {
+    public static DataPoint jsonDataPoint(JsonNode val, String port, Date timestamp){
         DataPoint dp = new DataPoint();
+        dp.setValue(JsonNodeFactory.instance.numberNode(numVal));
         dp.setPort(port);
         dp.setTimestamp(dateFormatter().format(timestamp));
-        dp.setValue(JsonNodeFactory.instance.numberNode(numVal));
         return dp;
+    }
+
+    public static DataPoint numericDataPoint(Double numVal, String port, Date timestamp) {
+        return jsonDataPoint(JsonNodeFactory.instance.numberNode(numVal), port, timestamp);
+    }
+
+    public static DataPoint textDataPoint(String val, String port, Date timestamp) {
+        return jsonDataPoint(JsonNodeFactory.instance.textNode(val), port, timestamp);
     }
 
     public String getId() {
