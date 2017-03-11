@@ -51,7 +51,7 @@ public class HeliumTest {
         List<Label> labels = Helium.labels();
         System.out.println(labels.toString());
         for (Label label : labels) {
-            for (Sensor sensor : label.getRelatedSensors()) {
+            for (Sensor sensor : label.sensors()) {
                 System.out.println(sensor.toString());
             }
         }

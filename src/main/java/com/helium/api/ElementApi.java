@@ -4,6 +4,7 @@ import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.model.DataPoint;
 import com.helium.model.Element;
 import com.helium.model.Metadata;
+import com.helium.model.Sensor;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -34,4 +35,7 @@ public interface ElementApi {
 
     @PUT("element/{elementId}/metadata")
     Call<Metadata> replaceElementMetadata(@Path("elementId")String elementId, @Body Metadata metadata);
+
+    @GET("element/{elementId}/sensor")
+    Call<JSONAPIDocument<List<Sensor>>> elementSensors(@Path("elementId")String elementId);
 }

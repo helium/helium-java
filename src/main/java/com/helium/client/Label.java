@@ -50,7 +50,7 @@ public class Label {
         return new Label(api, api.label.updateLabel(model).execute().body().get());
     }
 
-    public List<Sensor> getRelatedSensors() throws IOException {
+    public List<Sensor> sensors() throws IOException {
         Response<JSONAPIDocument<List<com.helium.model.Sensor>>> response =
                 api.label.labelRelationshipSensors(model.id()).execute();
         List<com.helium.model.Sensor> sensorModels = response.body().get();

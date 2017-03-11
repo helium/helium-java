@@ -72,6 +72,17 @@ public class Element {
         return this;
     }
 
+    public List<Sensor> sensors() throws IOException {
+        List<com.helium.model.Sensor> sensorModels =
+                api.element.elementSensors(id()).execute().body().get();
+        List<Sensor> sensors = new ArrayList<>();
+        for (com.helium.model.Sensor model : sensorModels) {
+            sensors.add(new Sensor(api, model));
+        }
+        return sensors;
+
+    }
+
     public String id() {
         return model.id();
     }
