@@ -2,6 +2,7 @@ package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
 import com.helium.model.DataPoint;
+import com.helium.model.Element;
 import com.helium.model.Metadata;
 import com.helium.model.Sensor;
 import okhttp3.ResponseBody;
@@ -39,4 +40,6 @@ public interface SensorApi {
     @PUT("sensor/{sensorId}/metadata")
     Call<Metadata> replaceSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
 
+    @GET("sensor/{sensorId}/element")
+    Call<JSONAPIDocument<List<Element>>> sensorElements(@Path("sensorId")String sensorId);
 }

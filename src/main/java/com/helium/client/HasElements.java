@@ -3,7 +3,7 @@ package com.helium.client;
 import java.io.IOException;
 import java.util.List;
 
-public interface HasSensors {
+public interface HasElements {
 
-    List<Sensor> sensors() throws IOException;
+    List<Element> elements() throws IOException;
 }

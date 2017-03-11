@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Sensor implements HasMetadata {
+public class Sensor implements HasMetadata, HasElements {
 
     private HeliumApi api;
     private com.helium.model.Sensor model;
@@ -92,5 +92,16 @@ public class Sensor implements HasMetadata {
     @Override
     public String toString() {
         return model.toString();
+    }
+
+    @Override
+    public List<Element> elements() throws IOException {
+        List<com.helium.model.Element> elementModels =
+                api.sensor.sensorElements(id()).execute().body().get();
+        List<Element> elements = new ArrayList<>();
+        for (com.helium.model.Element model : elementModels) {
+            elements.add(new Element(api, model));
+        }
+        return elements;
     }
 }
