@@ -16,6 +16,9 @@ public interface SensorApi {
     @GET("sensor/{sensorId}")
     Call<JSONAPIDocument<Sensor>> sensor(@Path("sensorId")String sensorId);
 
+    @PATCH("sensor/{sensorId}")
+    Call<JSONAPIDocument<Sensor>> updateSensor(@Body Sensor sensor);
+
     @DELETE("sensor/{sensorId}")
     Call<ResponseBody> deleteSensor(@Path("sensorId")String sensorId);
 
@@ -42,4 +45,5 @@ public interface SensorApi {
 
     @GET("sensor/{sensorId}/label")
     Call<JSONAPIDocument<List<Label>>> sensorLabels(@Path("sensorId")String sensorId);
+
 }

@@ -48,6 +48,12 @@ public class Sensor implements HasLabels, HasMetadata, HasElements {
         }
     }
 
+    public Sensor setName(String name) throws IOException {
+        model.setName(name);
+        api.sensor.updateSensor(model).execute();
+        return this;
+    }
+
     public List<DataPoint> timeseries() throws IOException {
         JSONAPIDocument<List<DataPoint>> dataPoints =
                 api.sensor.timeseries(model.id()).execute().body();
