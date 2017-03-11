@@ -63,6 +63,37 @@ public class Label implements HasMetadata, HasSensors {
         return sensors;
     }
 
+    public Label addSensor(Sensor sensor) throws IOException {
+       return addSensors(new ArrayList() {{ add(sensor); }} );
+    }
+
+    public Label addSensors(List<Sensor> sensors) throws IOException {
+        List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
+        for(Sensor sensor : sensors) {
+            sensorModels.add(sensor.model());
+        }
+        api.label.addSensors(id(), sensorModels).execute().body().get();
+        return lookupLabel(api, id()).get();
+    }
+
+    public Label replaceSensors(List<Sensor> sensors) throws IOException {
+        List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
+        for(Sensor sensor : sensors) {
+            sensorModels.add(sensor.model());
+        }
+        api.label.replaceSensors(id(), sensorModels).execute().body().get();
+        return lookupLabel(api, id()).get();
+    }
+
+    public Label removeSensors(List<Sensor> sensors) throws IOException {
+        List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
+        for(Sensor sensor : sensors) {
+            sensorModels.add(sensor.model());
+        }
+        api.label.removeSensors(id(), sensorModels).execute().body().get();
+        return lookupLabel(api, id()).get();
+    }
+
     public void delete() throws IOException {
         api.label.deleteLabel(model.id()).execute();
     }

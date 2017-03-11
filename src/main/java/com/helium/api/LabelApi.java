@@ -39,13 +39,13 @@ public interface LabelApi {
     @GET("label/{labelId}/sensor")
     Call<JSONAPIDocument<List<Sensor>>> labelRelationshipSensors(@Path("labelId")String labelId);
 
-    @POST("label/{labelId}/relationships")
-    Call<JSONAPIDocument<List<Sensor>>> addSensorLabels(@Path("labelId")String labelId, @Body List<Sensor> sensor);
+    @POST("label/{labelId}/relationships/sensor")
+    Call<JSONAPIDocument<List<Sensor>>> addSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
 
-    @PATCH("label/{labelId}/relationships")
-    Call<JSONAPIDocument<List<Sensor>>> replaceLabelSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
+    @PATCH("label/{labelId}/relationships/sensor")
+    Call<JSONAPIDocument<List<Sensor>>> replaceSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
 
-    @DELETE("label/{labelId}/relationships")
-    Call<JSONAPIDocument<List<Sensor>>> removeLabelSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
+    @DELETE("label/{labelId}/relationships/sensor")
+    Call<JSONAPIDocument<List<Sensor>>> removeSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
 
 }

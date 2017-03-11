@@ -85,6 +85,10 @@ public class Sensor implements HasMetadata {
         return model.id();
     }
 
+    protected com.helium.model.Sensor model() {
+        return model;
+    }
+
     @Override
     public String toString() {
         return model.toString();

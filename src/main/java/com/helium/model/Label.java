@@ -24,4 +24,5 @@ public class Label extends Resource {
                 "labelSensors=" + labelSensors +
                 "} " + super.toString();
     }
+
 }

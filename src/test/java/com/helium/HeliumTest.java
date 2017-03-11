@@ -62,10 +62,15 @@ public class HeliumTest {
         Label label = Helium.createLabel("Test Label A");
         System.out.println(label.toString());
 
-        Optional<Label> someLabel = Helium.lookupLabel(label.id());
-        System.out.println(label.toString());
+        Sensor sensor = Helium.createVirtualSensor("Test Sensor A");
+        label.addSensor(sensor);
+
+        List<Sensor> labelSensors = label.sensors();
+        System.out.println(labelSensors.toString());
+
 
         label.delete();
+        sensor.delete();
     }
 
     @Test
