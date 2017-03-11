@@ -12,6 +12,9 @@ public class Label extends Resource {
     @Relationship("sensor")
     private List<Sensor> labelSensors;
 
+    @Relationship("element")
+    private List<Element> labelElements;
+
     public static Label newLabel(String name) {
         Label label = new Label();
         label.setName(name);
@@ -22,7 +25,7 @@ public class Label extends Resource {
     public String toString() {
         return "Label{" +
                 "labelSensors=" + labelSensors +
+                ", labelElements=" + labelElements +
                 "} " + super.toString();
     }
-
 }
