@@ -100,6 +100,10 @@ public class Element implements HasMetadata, HasSensors {
         return model.id();
     }
 
+    public com.helium.model.Element model() {
+        return model;
+    }
+
     @Override
     public String toString() {
         return model.toString();

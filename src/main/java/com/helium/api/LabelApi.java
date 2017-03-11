@@ -1,6 +1,7 @@
 package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
+import com.helium.model.Element;
 import com.helium.model.Label;
 import com.helium.model.Metadata;
 import com.helium.model.Sensor;
@@ -37,7 +38,7 @@ public interface LabelApi {
     Call<Metadata> replaceLabelMetadata(@Path("labelId")String labelId, @Body Metadata metadata);
 
     @GET("label/{labelId}/sensor")
-    Call<JSONAPIDocument<List<Sensor>>> labelRelationshipSensors(@Path("labelId")String labelId);
+    Call<JSONAPIDocument<List<Sensor>>> labelSensors(@Path("labelId")String labelId);
 
     @POST("label/{labelId}/relationships/sensor")
     Call<JSONAPIDocument<List<Sensor>>> addSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
@@ -47,5 +48,17 @@ public interface LabelApi {
 
     @DELETE("label/{labelId}/relationships/sensor")
     Call<JSONAPIDocument<List<Sensor>>> removeSensors(@Path("labelId")String labelId, @Body List<Sensor> sensor);
+
+    @GET("label/{labelId}/element")
+    Call<JSONAPIDocument<List<Element>>> labelElements(@Path("labelId")String labelId);
+    
+    @POST("label/{labelId}/relationships/element")
+    Call<JSONAPIDocument<List<Element>>> addElements(@Path("labelId")String labelId, @Body List<Element> element);
+
+    @PATCH("label/{labelId}/relationships/element")
+    Call<JSONAPIDocument<List<Element>>> replaceElements(@Path("labelId")String labelId, @Body List<Element> element);
+
+    @DELETE("label/{labelId}/relationships/element")
+    Call<JSONAPIDocument<List<Element>>> removeElements(@Path("labelId")String labelId, @Body List<Element> element);
 
 }

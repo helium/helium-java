@@ -7,6 +7,7 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,10 +52,18 @@ public class Label implements HasMetadata, HasSensors {
         return new Label(api, api.label.updateLabel(model).execute().body().get());
     }
 
+    public void delete() throws IOException {
+        api.label.deleteLabel(model.id()).execute();
+    }
+
+    public String id() {
+        return model.id();
+    }
+
     @Override
     public List<Sensor> sensors() throws IOException {
         Response<JSONAPIDocument<List<com.helium.model.Sensor>>> response =
-                api.label.labelRelationshipSensors(model.id()).execute();
+                api.label.labelSensors(model.id()).execute();
         List<com.helium.model.Sensor> sensorModels = response.body().get();
         List<Sensor> sensors = new ArrayList<>();
         for (com.helium.model.Sensor model : sensorModels) {
@@ -64,7 +73,7 @@ public class Label implements HasMetadata, HasSensors {
     }
 
     public Label addSensor(Sensor sensor) throws IOException {
-       return addSensors(new ArrayList() {{ add(sensor); }} );
+       return addSensors(Arrays.asList(sensor));
     }
 
     public Label addSensors(List<Sensor> sensors) throws IOException {
@@ -85,6 +94,14 @@ public class Label implements HasMetadata, HasSensors {
         return lookupLabel(api, id()).get();
     }
 
+    public Label clearSensors() throws IOException {
+        return replaceSensors(new ArrayList<>());
+    }
+
+    public Label removeSensor(Sensor sensor) throws IOException {
+        return removeSensors(Arrays.asList(sensor));
+    }
+
     public Label removeSensors(List<Sensor> sensors) throws IOException {
         List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
         for(Sensor sensor : sensors) {
@@ -94,12 +111,54 @@ public class Label implements HasMetadata, HasSensors {
         return lookupLabel(api, id()).get();
     }
 
-    public void delete() throws IOException {
-        api.label.deleteLabel(model.id()).execute();
+    public List<Element> elements() throws IOException {
+        Response<JSONAPIDocument<List<com.helium.model.Element>>> response =
+                api.label.labelElements(model.id()).execute();
+        List<com.helium.model.Element> elementModels = response.body().get();
+        List<Element> elements = new ArrayList<>();
+        for (com.helium.model.Element model : elementModels) {
+            elements.add(new Element(api, model));
+        }
+        return elements;
     }
 
-    public String id() {
-        return model.id();
+    public Label addElement(Element element) throws IOException {
+        return addElements(Arrays.asList(element));
+    }
+
+    public Label addElements(List<Element> elements) throws IOException {
+        List<com.helium.model.Element> elementModels = new ArrayList<>();
+        for(Element element : elements) {
+            elementModels.add(element.model());
+        }
+        api.label.addElements(id(), elementModels).execute().body().get();
+        return lookupLabel(api, id()).get();
+    }
+
+    public Label replaceElements(List<Element> elements) throws IOException {
+        List<com.helium.model.Element> elementModels = new ArrayList<>();
+        for(Element element : elements) {
+            elementModels.add(element.model());
+        }
+        api.label.replaceElements(id(), elementModels).execute().body().get();
+        return lookupLabel(api, id()).get();
+    }
+
+    public Label clearElements() throws IOException {
+        return replaceElements(new ArrayList<>());
+    }
+
+    public Label removeElement(Element element) throws IOException {
+        return removeElements(Arrays.asList(element));
+    }
+
+    public Label removeElements(List<Element> elements) throws IOException {
+        List<com.helium.model.Element> elementModels = new ArrayList<>();
+        for(Element element : elements) {
+            elementModels.add(element.model());
+        }
+        api.label.removeElements(id(), elementModels).execute().body().get();
+        return lookupLabel(api, id()).get();
     }
 
     @Override
