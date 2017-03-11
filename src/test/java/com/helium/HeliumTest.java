@@ -7,6 +7,7 @@ import com.helium.client.Organization;
 import com.helium.client.Sensor;
 import com.helium.client.User;
 import com.helium.resource.*;
+import com.helium.resource.Metadata;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -104,6 +105,8 @@ public class HeliumTest {
     public void sensorMetadata() throws IOException {
         Sensor sensor = Helium.lookupSensor("6887943b-852b-4ab5-a71a-12f0ce31cf75").get();
         Metadata metadata = sensor.sensorMetadata();
+        System.out.println(metadata.toString());
+        sensor.updateSensorMetadata(metadata.addAttribute("foo", "bar"));
         System.out.println(metadata.toString());
     }
 }

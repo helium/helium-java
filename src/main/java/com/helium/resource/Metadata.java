@@ -1,5 +1,6 @@
 package com.helium.resource;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Metadata {
@@ -22,12 +23,29 @@ public class Metadata {
         data.attributes = attibutes;
     }
 
+    public Metadata addAttribute(String fieldName, String fieldValue) {
+        data.attributes.put(fieldName, fieldValue);
+        return this;
+    }
+
+    public Metadata addAttribute(String fieldName, int fieldValue) {
+        data.attributes.put(fieldName, fieldValue);
+        return this;
+    }
+
+    public Metadata addAttribute(String fieldName, double fieldValue) {
+        data.attributes.put(fieldName, fieldValue);
+        return this;
+    }
+
+    public Metadata addAttribute(String fieldName, JsonNode fieldValue) {
+        data.attributes.replace(fieldName, fieldValue);
+        return this;
+    }
 
     @Override
     public String toString() {
-        return "Metadata{" +
-                "data=" + data +
-                '}';
+        return "Metadata{" + data + '}';
     }
 
     public class Data {
@@ -61,11 +79,9 @@ public class Metadata {
 
         @Override
         public String toString() {
-            return "Data{" +
-                    "attributes=" + attributes +
+            return "attributes=" + attributes +
                     ", id='" + id + '\'' +
-                    ", type='" + type + '\'' +
-                    '}';
+                    ", type='" + type + '\'';
         }
     }
 }

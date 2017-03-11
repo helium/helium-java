@@ -32,4 +32,8 @@ public interface SensorApi {
 
     @GET("sensor/{sensorId}/metadata")
     Call<Metadata> sensorMetadata(@Path("sensorId")String sensorId);
+
+    @PATCH("sensor/{sensorId}/metadata")
+    Call<Metadata> updateSensorMetadata(@Path("sensorId")String sensorId, @Body Metadata metadata);
+
 }

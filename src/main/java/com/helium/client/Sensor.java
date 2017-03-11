@@ -68,6 +68,12 @@ public class Sensor {
         return api.sensor.sensorMetadata(id()).execute().body();
     }
 
+    public Sensor updateSensorMetadata(Metadata metadata) throws IOException {
+        Metadata metadata1 = api.sensor.updateSensorMetadata(id(), metadata).execute().body();
+        System.out.println(metadata1);
+        return this;
+    }
+
     public String id() {
         return model.id();
     }

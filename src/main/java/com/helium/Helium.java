@@ -56,7 +56,6 @@ public class Helium {
         JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(WRAP_ROOT_VALUE);
 
         JacksonConverterFactory jacksonConverterFactory = JacksonConverterFactory.create(objectMapper);
 
