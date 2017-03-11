@@ -2,7 +2,6 @@ package com.helium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jasminb.jsonapi.ResourceConverter;
-import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.api.*;
 import com.helium.client.*;
@@ -50,7 +49,6 @@ public class Helium {
                 com.helium.model.Organization.class,
                 com.helium.model.User.class
             );
-        converter.enableSerializationOption(SerializationFeature.INCLUDE_RELATIONSHIP_ATTRIBUTES);
         JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
 
         ObjectMapper objectMapper = new ObjectMapper();

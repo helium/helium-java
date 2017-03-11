@@ -8,7 +8,7 @@ import retrofit2.http.*;
 
 public interface OrganizationApi {
 
-    @GET("organization")
+    @GET("organization?include=user")
     Call<JSONAPIDocument<Organization>> organization();
 
     @PATCH("organization")

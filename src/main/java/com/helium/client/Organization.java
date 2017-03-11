@@ -4,6 +4,8 @@ import com.helium.api.HeliumApi;
 import com.helium.model.Metadata;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Organization implements HasMetadata {
 
@@ -18,6 +20,14 @@ public class Organization implements HasMetadata {
 
     public static Organization organization(HeliumApi api) throws IOException {
         return new Organization(api, api.org.organization().execute().body().get());
+    }
+
+    public List<User> users() {
+        List<User> users = new ArrayList<>();
+        for (com.helium.model.User user : model.getUsers()){
+            users.add(new User(api, user));
+        }
+        return users;
     }
 
     public Organization setName(String name) throws IOException {
