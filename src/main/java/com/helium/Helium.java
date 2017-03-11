@@ -4,10 +4,7 @@ import com.github.jasminb.jsonapi.ResourceConverter;
 import com.github.jasminb.jsonapi.SerializationFeature;
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory;
 import com.helium.api.*;
-import com.helium.client.Label;
-import com.helium.client.Organization;
-import com.helium.client.Sensor;
-import com.helium.client.User;
+import com.helium.client.*;
 import com.helium.resource.DataPoint;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -45,6 +42,7 @@ public class Helium {
         ResourceConverter converter =
             new ResourceConverter(
                 DataPoint.class,
+                com.helium.resource.Element.class,
                 com.helium.resource.Label.class,
                 com.helium.resource.Sensor.class,
                 com.helium.resource.Organization.class,
@@ -62,6 +60,7 @@ public class Helium {
                 .build();
 
         heliumApi = new HeliumApi(
+                retrofit.create(ElementApi.class),
                 retrofit.create(LabelApi.class),
                 retrofit.create(OrganizationApi.class),
                 retrofit.create(SensorApi.class),
@@ -73,12 +72,20 @@ public class Helium {
         return Organization.organization(instance.heliumApi);
     }
 
+    public static List<Element> elements() throws IOException {
+        return Element.getElements(instance.heliumApi);
+    }
+
     public static List<Sensor> sensors() throws IOException {
         return Sensor.getSensors(instance.heliumApi);
     }
 
     public static List<Label> labels() throws IOException {
         return Label.getLabels(instance.heliumApi);
+    }
+
+    public static Optional<Element> lookupElement(String elementId) throws IOException {
+        return Element.lookupElement(instance.heliumApi, elementId);
     }
 
     public static Optional<Label> lookupLabel(String labelId) throws IOException {

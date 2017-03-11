@@ -1,16 +1,15 @@
 package com.helium;
 
-import com.helium.client.Label;
-import com.helium.client.Sensor;
-import com.helium.client.User;
+import com.helium.client.*;
 import com.helium.resource.DataPoint;
-import com.helium.client.Organization;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.Assert.assertTrue;
 
 public class HeliumTest {
 
@@ -34,7 +33,7 @@ public class HeliumTest {
     public void createSensor() throws Exception {
         Sensor sensor = Helium.createVirtualSensor("Test Sensor A");
         System.out.println(sensor.toString());
-        
+
         Optional<Sensor> someSensor = Helium.lookupSensor(sensor.id());
         System.out.println(someSensor.toString());
 
@@ -51,7 +50,7 @@ public class HeliumTest {
             }
         }
     }
-    
+
     @Test
     public void createLabel() throws Exception {
         Label label = Helium.createLabel("Test Label A");
@@ -83,5 +82,15 @@ public class HeliumTest {
     public void user() throws Exception {
         User user = Helium.user();
         System.out.println(user.toString());
+    }
+
+    @Test
+    public void elements() throws Exception {
+        List<Element> elements = Helium.elements();
+        System.out.println(elements.toString());
+        for(Element element : elements) {
+            assertTrue(Helium.lookupElement(element.id()).isPresent());
+        }
+
     }
 }
