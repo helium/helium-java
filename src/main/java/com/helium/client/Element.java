@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Element implements HasMetadata, HasSensors {
+public class Element implements HasLabels, HasMetadata, HasSensors {
 
     private HeliumApi api;
     private com.helium.model.Element model;
@@ -86,6 +86,7 @@ public class Element implements HasMetadata, HasSensors {
         return sensors;
     }
 
+    @Override
     public List<Label> labels() throws IOException {
         List<com.helium.model.Label> labelModels =
                 api.element.elementLabels(id()).execute().body().get();
