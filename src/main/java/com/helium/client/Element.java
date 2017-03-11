@@ -80,7 +80,16 @@ public class Element {
             sensors.add(new Sensor(api, model));
         }
         return sensors;
+    }
 
+    public List<Label> labels() throws IOException {
+        List<com.helium.model.Label> labelModels =
+                api.element.elementLabels(id()).execute().body().get();
+        List<Label> labels = new ArrayList<>();
+        for (com.helium.model.Label model : labelModels) {
+            labels.add(new Label(api, model));
+        }
+        return labels;
     }
 
     public String id() {

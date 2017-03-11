@@ -1,10 +1,7 @@
 package com.helium.api;
 
 import com.github.jasminb.jsonapi.JSONAPIDocument;
-import com.helium.model.DataPoint;
-import com.helium.model.Element;
-import com.helium.model.Metadata;
-import com.helium.model.Sensor;
+import com.helium.model.*;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -38,4 +35,7 @@ public interface ElementApi {
 
     @GET("element/{elementId}/sensor")
     Call<JSONAPIDocument<List<Sensor>>> elementSensors(@Path("elementId")String elementId);
+
+    @GET("element/{elementId}/label")
+    Call<JSONAPIDocument<List<Label>>> elementLabels(@Path("elementId")String elementId);
 }
