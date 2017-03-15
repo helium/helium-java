@@ -21,6 +21,13 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         this.model = model;
     }
 
+    /**
+     * Create a new Label.
+     * @param api
+     * @param labelName The Label's new name.
+     * @return
+     * @throws IOException
+     */
     public static Label createLabel(HeliumApi api, String labelName) throws IOException {
         com.helium.model.Label newModel =
                 api.label.createLabel(com.helium.model.Label.newLabel(labelName))
@@ -28,6 +35,12 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         return new Label(api, newModel);
     }
 
+    /**
+     * Retrieve all labels associated with the account.
+     * @param api
+     * @return
+     * @throws IOException
+     */
     public static List<Label> getLabels(HeliumApi api) throws IOException {
         List<com.helium.model.Label> labels = api.label.labels().execute().body().get();
         List<Label> clientLabels = new ArrayList<>();
@@ -37,6 +50,13 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         return clientLabels;
     }
 
+    /**
+     * Lookup a Label by ID.
+     * @param api
+     * @param labelId ID of the Label
+     * @return {@link java.util.Optional#of Optional.of} the Label if one exists with the given ID, otherwise {@link Optional#empty() Optional.empty}
+     * @throws IOException
+     */
     public static Optional<Label> lookupLabel(HeliumApi api, String labelId) throws IOException {
         Response<JSONAPIDocument<com.helium.model.Label>> labelResponse = api.label.label(labelId).execute();
         if (labelResponse.isSuccessful()) {
@@ -47,15 +67,29 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         }
     }
 
+    /**
+     * Set the name of a Label.
+     * @param name
+     * @return
+     * @throws IOException
+     */
     public Label setName(String name) throws IOException {
         model.setName(name);
         return new Label(api, api.label.updateLabel(model).execute().body().get());
     }
 
+    /**
+     * Delete the Label.
+     * @throws IOException
+     */
     public void delete() throws IOException {
         api.label.deleteLabel(model.id()).execute();
     }
 
+    /**
+     * The ID of the Label.
+     * @return
+     */
     public String id() {
         return model.id();
     }
@@ -72,10 +106,22 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         return sensors;
     }
 
+    /**
+     * Add a single Sensor to the collection associated with the Label.
+     * @param sensor
+     * @return
+     * @throws IOException
+     */
     public Label addSensor(Sensor sensor) throws IOException {
        return addSensors(Arrays.asList(sensor));
     }
 
+    /**
+     * Add a list of Sensors to the collection associated with the Label.
+     * @param sensors
+     * @return
+     * @throws IOException
+     */
     public Label addSensors(List<Sensor> sensors) throws IOException {
         List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
         for(Sensor sensor : sensors) {
@@ -85,6 +131,12 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         return lookupLabel(api, id()).get();
     }
 
+    /**
+     * Replace the current collection of Sensors associated with a Label with the given list of Sensors.
+     * @param sensors
+     * @return
+     * @throws IOException
+     */
     public Label replaceSensors(List<Sensor> sensors) throws IOException {
         List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
         for(Sensor sensor : sensors) {
@@ -94,14 +146,31 @@ public class Label implements HasMetadata, HasSensors, HasElements {
         return lookupLabel(api, id()).get();
     }
 
+    /**
+     * Remove all sensors associated with the Label.
+     * @return
+     * @throws IOException
+     */
     public Label clearSensors() throws IOException {
         return replaceSensors(new ArrayList<>());
     }
 
+    /**
+     * Remove a specified Sensor from the collection of Sensors associated with the Label.
+     * @param sensor
+     * @return
+     * @throws IOException
+     */
     public Label removeSensor(Sensor sensor) throws IOException {
         return removeSensors(Arrays.asList(sensor));
     }
 
+    /**
+     * Remove a specified list of Sensors from the collection of Sensors associated with the Label.
+     * @param sensor
+     * @return
+     * @throws IOException
+     */
     public Label removeSensors(List<Sensor> sensors) throws IOException {
         List<com.helium.model.Sensor> sensorModels = new ArrayList<>();
         for(Sensor sensor : sensors) {

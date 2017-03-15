@@ -16,6 +16,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Sets up connections and de-serialization to the Helium API. Provide an API
+ * token to {@link #client(String)} to set up a connection to the API.
+ * <p>
+ * This is the preferred method of establishing a connection if the environment
+ * variable <code>HELIUM_API_KEY</code> is not set or multiple clients are required.
+ */
 public class Client {
 
     private static final String HELIUM_API_URL = "https://api.helium.com/v1/";
@@ -79,43 +86,88 @@ public class Client {
         return new Client(baseUrl, heliumApiKey);
     }
 
+    /**
+     * Get the {@link com.helium.client.Organization organization} associated with your account.
+     * @throws IOException
+     */
     public Organization organization() throws IOException {
         return Organization.organization(heliumApi);
     }
 
+    /**
+     * Get the current {@link com.helium.client.User user}.
+     * @throws IOException
+     */
+    public User user() throws IOException {
+        return User.getUser(heliumApi);
+    }
+
+    /**
+     * Retrieve {@link com.helium.client.Element Elements} in the account.
+     * @throws IOException
+     */
     public List<Element> elements() throws IOException {
         return Element.getElements(heliumApi);
     }
 
+    /**
+     * Retrieve {@link com.helium.client.Sensor Sensors} in the account.
+     * @throws IOException
+     */
     public List<Sensor> sensors() throws IOException {
         return Sensor.getSensors(heliumApi);
     }
 
+    /**
+     * Retrieve {@link com.helium.client.Label Labels} in the account.
+     * @throws IOException
+     */
     public List<Label> labels() throws IOException {
         return Label.getLabels(heliumApi);
     }
 
+    /**
+     * Lookup an {@link com.helium.client.Element Element} by ID.
+     * @param elementId Element ID, a UUID
+     * @throws IOException
+     */
     public Optional<Element> lookupElement(String elementId) throws IOException {
         return Element.lookupElement(heliumApi, elementId);
     }
 
-    public Optional<Label> lookupLabel(String labelId) throws IOException {
-        return Label.lookupLabel(heliumApi, labelId);
-    }
-
-    public Label createLabel(String labelName) throws IOException {
-        return Label.createLabel(heliumApi, labelName);
-    }
-
+    /**
+     * Lookup a {@link com.helium.client.Sensor Sensor} by ID.
+     * @param sensorId Sensor ID, a UUID
+     * @throws IOException
+     */
     public Optional<Sensor> lookupSensor(String sensorId) throws IOException {
         return Sensor.lookupSensor(heliumApi, sensorId);
     }
 
+    /**
+     * Lookup a {@link com.helium.client.Label Label} by ID.
+     * @param labelId Label ID, a UUID
+     * @throws IOException
+     */
+    public Optional<Label> lookupLabel(String labelId) throws IOException {
+        return Label.lookupLabel(heliumApi, labelId);
+    }
+
+    /**
+     * Create a new virtual {@link com.helium.client.Sensor Sensor}.
+     * @param sensorName The name of the new Sensor.
+     * @throws IOException
+     */
     public Sensor createVirtualSensor(String sensorName) throws IOException {
         return Sensor.createSensor(heliumApi, sensorName);
     }
 
-    public User user() throws IOException {
-        return User.getUser(heliumApi);
+     /**
+     * Lookup a {@link com.helium.client.Label Label} by UUID.
+     * @param labelName The name of the new Label
+     * @throws IOException
+     */
+    public Label createLabel(String labelName) throws IOException {
+        return Label.createLabel(heliumApi, labelName);
     }
 }

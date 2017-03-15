@@ -21,6 +21,12 @@ public class Sensor implements HasLabels, HasMetadata, HasElements {
         this.model = model;
     }
 
+    /**
+     * Create a new (virtual) Sensor with the given name.
+     * @param api
+     * @param sensorName The new Sensor's name
+     * @throws IOException
+     */
     public static Sensor createSensor(HeliumApi api, String sensorName) throws IOException {
         return new Sensor(
                 api,
@@ -91,7 +97,7 @@ public class Sensor implements HasLabels, HasMetadata, HasElements {
         return model.id();
     }
 
-    protected com.helium.model.Sensor model() {
+    com.helium.model.Sensor model() {
         return model;
     }
 
