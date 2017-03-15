@@ -17,97 +17,54 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * Convenience class to used explore the Helium API. This class gets the Helium API token from the environment variable
+ * `HELIUM_API_KEY` to set up a connection to the Helium API. Use {@link com.helium.Client#client(String)} if setting
+ * the Helium API token another way.
+ */
 public class Helium {
 
-    private HeliumApi heliumApi;
+    private static final String heliumApiKey = System.getenv("HELIUM_API_KEY");
+    private static final Client instance = Client.client(heliumApiKey);
 
-    private static final String HELIUM_API_URL = "https://api.helium.com/v1";
-    private static String heliumApiKey = System.getenv("HELIUM_API_KEY");
-
-    private static Helium instance = new Helium(HELIUM_API_URL, heliumApiKey);
-
-
-    private Helium(String baseUrl, final String apiToken) {
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request originalRequest = chain.request();
-
-                Request.Builder builder = originalRequest.newBuilder().header("Authorization", apiToken);
-
-                Request newRequest = builder.build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-
-        ResourceConverter converter =
-            new ResourceConverter(
-                DataPoint.class,
-                com.helium.model.Element.class,
-                com.helium.model.Label.class,
-                com.helium.model.Sensor.class,
-                com.helium.model.Organization.class,
-                com.helium.model.User.class
-            );
-        JSONAPIConverterFactory converterFactory = new JSONAPIConverterFactory(converter);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        JacksonConverterFactory jacksonConverterFactory = JacksonConverterFactory.create(objectMapper);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl+"/")
-                .client(okHttpClient)
-                .addConverterFactory(converterFactory)
-                .addConverterFactory(jacksonConverterFactory)
-                .build();
-
-        heliumApi = new HeliumApi(
-                retrofit.create(ElementApi.class),
-                retrofit.create(LabelApi.class),
-                retrofit.create(OrganizationApi.class),
-                retrofit.create(SensorApi.class),
-                retrofit.create(UserApi.class)
-        );
-    }
 
     public static Organization organization() throws IOException {
-        return Organization.organization(instance.heliumApi);
+        return instance.organization();
     }
 
     public static List<Element> elements() throws IOException {
-        return Element.getElements(instance.heliumApi);
+        return instance.elements();
     }
 
     public static List<Sensor> sensors() throws IOException {
-        return Sensor.getSensors(instance.heliumApi);
+        return instance.sensors();
     }
 
     public static List<Label> labels() throws IOException {
-        return Label.getLabels(instance.heliumApi);
+        return instance.labels();
     }
 
     public static Optional<Element> lookupElement(String elementId) throws IOException {
-        return Element.lookupElement(instance.heliumApi, elementId);
+        return instance.lookupElement(elementId);
     }
 
     public static Optional<Label> lookupLabel(String labelId) throws IOException {
-        return Label.lookupLabel(instance.heliumApi, labelId);
+        return instance.lookupLabel(labelId);
     }
 
     public static Label createLabel(String labelName) throws IOException {
-        return Label.createLabel(instance.heliumApi, labelName);
+        return instance.createLabel(labelName);
     }
 
     public static Optional<Sensor> lookupSensor(String sensorId) throws IOException {
-        return Sensor.lookupSensor(instance.heliumApi, sensorId);
+        return instance.lookupSensor(sensorId);
     }
 
     public static Sensor createVirtualSensor(String sensorName) throws IOException {
-        return Sensor.createSensor(instance.heliumApi, sensorName);
+        return instance.createVirtualSensor(sensorName);
     }
 
     public static User user() throws IOException {
-        return User.getUser(instance.heliumApi);
+        return instance.user();
     }
 }
